@@ -2,7 +2,6 @@
 const path = require("path");
 require("dotenv").config({ path: "config.env" });
 const express = require("express");
-const morgan = require("morgan");
 const cors = require("cors");
 const compression = require("compression");
 
@@ -37,6 +36,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "uploads")));
 
 if (process.env.NODE_ENV === "development") {
+  // todo: eslint giving me error about using morgan as a dependency, but ig it is fine to use it as a dev dependency "change the rule later :)"
+  const morgan = require("morgan");
   app.use(morgan("dev"));
   console.log(`mode: ${process.env.NODE_ENV}`);
 }
