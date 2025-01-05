@@ -25,6 +25,7 @@ app.use(compression()); // !Compress all responses
 
 // todo: shouldn't express.json() would be enough instead of express.raw
 // todo: shouldn't we move the webhookCheckout inside of the orderService? or does it slow the process?
+// todo: shouldn't we use cors for stripe webhook to accept only from stripe?
 // !checkout webhook
 app.post(
   "webhook-checkout",

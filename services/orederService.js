@@ -5,6 +5,7 @@ const { getAll, getOne } = require("./handlersFactory");
 const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
+const User = require("../models/userModel");
 
 // @desc Create cash order
 // @route POST /api/v1/orders/:cartId
@@ -169,7 +170,7 @@ exports.getCheckoutSession = asyncHandler(async (req, res, next) => {
     ],
     mode: "payment",
     payment_method_types: ["card"],
-    success_url: `${req.protocol}://${req.get("host")}/orders`,
+    success_url: `${req.protocol}://${req.get("host")}/orders`, // todo: search this later
     cancel_url: `${req.protocol}://${req.get("host")}/cart`,
     customer_email: req.user.email,
     client_reference_id: req.params.cartId,
@@ -183,7 +184,70 @@ exports.getCheckoutSession = asyncHandler(async (req, res, next) => {
   });
 });
 
+// todo: refactor this function ig? to be used in both places
+const createCartOrder = async (session) => {
+  const {
+    client_reference_id: cartId,
+    metadata: shippingAddress,
+    amount_total,
+  } = session;
+
+  const cart = await Cart.findById(cartId);
+  const user = await User.findById(cart.user);
+
+  // !create order
+  const order = await Order.create({
+    user: user._id,
+    cartItems: cart.cartItems,
+    totalOrderPrice: amount_total / 100,
+    shippingAddress,
+    isPaid: true,
+    paidAt: Date.now(),
+    paymentMethodType: "card",
+  });
+
+  // todo: make this a function and use it in both places
+  // !decrease the quantity and increase the sold of products
+  if (order) {
+    const bulkOption = cart.cartItems.map((item) => ({
+      updateOne: {
+        filter: { _id: item.product },
+        update: {
+          $inc: { quantity: -item.quantity, sold: +item.quantity },
+        },
+      },
+    }));
+    await Product.bulkWrite(bulkOption, {});
+
+    // !clear the cart
+    await Cart.findByIdAndDelete(cartId);
+  }
+};
+
 // @desc Webhook from stripe
 // @route POST /webhook-checkout
 // @access Public
-exports.webhookCheckout = asyncHandler(async (req, res, next) => {});
+exports.webhookCheckout = asyncHandler(async (req, res, next) => {
+  let event;
+  // !Get the signature sent by Stripe
+  const signature = req.headers["stripe-signature"];
+
+  try {
+    // !Verify the event
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // !Handle the checkout.session.completed event
+  if (event.type === "checkout.session.completed") {
+    // !create order
+    await createCartOrder(event.data.object);
+  }
+
+  res.status(200).json({ received: true });
+});
