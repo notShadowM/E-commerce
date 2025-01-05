@@ -28,7 +28,7 @@ app.use(compression()); // !Compress all responses
 // todo: shouldn't we use cors for stripe webhook to accept only from stripe?
 // !checkout webhook
 app.post(
-  "webhook-checkout",
+  "/webhook-checkout",
   express.raw({ type: "application/json" }),
   webhookCheckout
 );
