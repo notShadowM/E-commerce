@@ -1,0 +1,182 @@
+[
+  {
+    "title": "PlayStation 5 Console",
+    "slug": "playstation-5-console",
+    "description": "The PlayStation 5 console unleashes new gaming possibilities that you never anticipated.",
+    "quantity": 50,
+    "sold": 10,
+    "price": 499.99,
+    "priceAfterDiscount": 449.99,
+    "colors": ["White", "Black"],
+    "imageCover": "https://example.com/images/ps5-cover.jpg",
+    "images": [
+      "https://example.com/images/ps5-1.jpg",
+      "https://example.com/images/ps5-2.jpg"
+    ],
+    "category": "675049d593a4501e7ed05eb7",
+    "ratingsAverage": 4.8,
+    "ratingsQuantity": 120
+  },
+  {
+    "title": "Xbox Series X",
+    "slug": "xbox-series-x",
+    "description": "The fastest, most powerful Xbox ever. Play thousands of titles from four generations of consoles.",
+    "quantity": 30,
+    "sold": 5,
+    "price": 499.99,
+    "priceAfterDiscount": 479.99,
+    "colors": ["Black"],
+    "imageCover": "https://example.com/images/xbox-series-x-cover.jpg",
+    "images": [
+      "https://example.com/images/xbox-series-x-1.jpg",
+      "https://example.com/images/xbox-series-x-2.jpg"
+    ],
+    "category": "67518309ca4260de592fcaf9",
+    "ratingsAverage": 4.7,
+    "ratingsQuantity": 95
+  },
+  {
+    "title": "Apple MacBook Pro 16-inch",
+    "slug": "apple-macbook-pro-16-inch",
+    "description": "The new MacBook Pro delivers game-changing performance for pro users.",
+    "quantity": 20,
+    "sold": 8,
+    "price": 2399.99,
+    "priceAfterDiscount": 2299.99,
+    "colors": ["Silver", "Space Gray"],
+    "imageCover": "https://example.com/images/macbook-pro-16-cover.jpg",
+    "images": [
+      "https://example.com/images/macbook-pro-16-1.jpg",
+      "https://example.com/images/macbook-pro-16-2.jpg"
+    ],
+    "category": "67504a2393a4501e7ed05eb9",
+    "ratingsAverage": 4.9,
+    "ratingsQuantity": 150
+  },
+  {
+    "title": "Dell XPS 13",
+    "slug": "dell-xps-13",
+    "description": "The Dell XPS 13 is a high-performance laptop with an InfinityEdge display.",
+    "quantity": 25,
+    "sold": 12,
+    "price": 999.99,
+    "priceAfterDiscount": 949.99,
+    "colors": ["Silver", "White"],
+    "imageCover": "https://example.com/images/dell-xps-13-cover.jpg",
+    "images": [
+      "https://example.com/images/dell-xps-13-1.jpg",
+      "https://example.com/images/dell-xps-13-2.jpg"
+    ],
+    "category": "67504a2393a4501e7ed05eb9",
+    "ratingsAverage": 4.6,
+    "ratingsQuantity": 85
+  },
+  {
+    "title": "PlayStation 4 Pro",
+    "slug": "playstation-4-pro",
+    "description": "The PlayStation 4 Pro delivers enhanced graphics and performance for an immersive gaming experience.",
+    "quantity": 40,
+    "sold": 20,
+    "price": 399.99,
+    "priceAfterDiscount": 379.99,
+    "colors": ["Black"],
+    "imageCover": "https://example.com/images/ps4-pro-cover.jpg",
+    "images": [
+      "https://example.com/images/ps4-pro-1.jpg",
+      "https://example.com/images/ps4-pro-2.jpg"
+    ],
+    "category": "675049d593a4501e7ed05eb7",
+    "ratingsAverage": 4.5,
+    "ratingsQuantity": 110
+  },
+  {
+    "title": "Microsoft Surface Laptop 4",
+    "slug": "microsoft-surface-laptop-4",
+    "description": "The Microsoft Surface Laptop 4 offers a perfect balance of style, performance, and battery life.",
+    "quantity": 15,
+    "sold": 7,
+    "price": 1299.99,
+    "priceAfterDiscount": 1249.99,
+    "colors": ["Platinum", "Matte Black"],
+    "imageCover": "https://example.com/images/surface-laptop-4-cover.jpg",
+    "images": [
+      "https://example.com/images/surface-laptop-4-1.jpg",
+      "https://example.com/images/surface-laptop-4-2.jpg"
+    ],
+    "category": "67504a2393a4501e7ed05eb9",
+    "ratingsAverage": 4.7,
+    "ratingsQuantity": 60
+  },
+  {
+    "title": "Xbox One S",
+    "slug": "xbox-one-s",
+    "description": "The Xbox One S is a sleek, powerful gaming console with 4K Ultra HD video and HDR support.",
+    "quantity": 35,
+    "sold": 15,
+    "price": 299.99,
+    "priceAfterDiscount": 279.99,
+    "colors": ["White"],
+    "imageCover": "https://example.com/images/xbox-one-s-cover.jpg",
+    "images": [
+      "https://example.com/images/xbox-one-s-1.jpg",
+      "https://example.com/images/xbox-one-s-2.jpg"
+    ],
+    "category": "67518309ca4260de592fcaf9",
+    "ratingsAverage": 4.4,
+    "ratingsQuantity": 70
+  },
+  {
+    "title": "HP Spectre x360",
+    "slug": "hp-spectre-x360",
+    "description": "The HP Spectre x360 is a versatile 2-in-1 laptop with a stunning design and powerful performance.",
+    "quantity": 18,
+    "sold": 9,
+    "price": 1399.99,
+    "priceAfterDiscount": 1349.99,
+    "colors": ["Nightfall Black", "Poseidon Blue"],
+    "imageCover": "https://example.com/images/hp-spectre-x360-cover.jpg",
+    "images": [
+      "https://example.com/images/hp-spectre-x360-1.jpg",
+      "https://example.com/images/hp-spectre-x360-2.jpg"
+    ],
+    "category": "67504a2393a4501e7ed05eb9",
+    "ratingsAverage": 4.8,
+    "ratingsQuantity": 55
+  },
+  {
+    "title": "PlayStation VR",
+    "slug": "playstation-vr",
+    "description": "The PlayStation VR headset brings immersive virtual reality experiences to your PlayStation console.",
+    "quantity": 25,
+    "sold": 10,
+    "price": 299.99,
+    "priceAfterDiscount": 279.99,
+    "colors": ["Black", "White"],
+    "imageCover": "https://example.com/images/ps-vr-cover.jpg",
+    "images": [
+      "https://example.com/images/ps-vr-1.jpg",
+      "https://example.com/images/ps-vr-2.jpg"
+    ],
+    "category": "675049d593a4501e7ed05eb7",
+    "ratingsAverage": 4.6,
+    "ratingsQuantity": 80
+  },
+  {
+    "title": "Razer Blade 15",
+    "slug": "razer-blade-15",
+    "description": "The Razer Blade 15 is a high-performance gaming laptop with a sleek design and powerful hardware.",
+    "quantity": 12,
+    "sold": 6,
+    "price": 1999.99,
+    "priceAfterDiscount": 1899.99,
+    "colors": ["Black"],
+    "imageCover": "https://example.com/images/razer-blade-15-cover.jpg",
+    "images": [
+      "https://example.com/images/razer-blade-15-1.jpg",
+      "https://example.com/images/razer-blade-15-2.jpg"
+    ],
+    "category": "67504a2393a4501e7ed05eb9",
+    "ratingsAverage": 4.7,
+    "ratingsQuantity": 45
+  }
+]
