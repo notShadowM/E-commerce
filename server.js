@@ -7,6 +7,7 @@ const compression = require("compression");
 
 const dbConnection = require("./config/database");
 const globalError = require("./middlewares/errorMiddleware");
+const mountRateLimiters = require("./middlewares/rateLimitMiddleware");
 const ApiError = require("./utils/apiError");
 // Routes
 const mountRoutes = require("./routes");
@@ -42,6 +43,9 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
   console.log(`mode: ${process.env.NODE_ENV}`);
 }
+
+// !Rate limiting middleware
+mountRateLimiters(app);
 
 // !Mount routes
 mountRoutes(app);
