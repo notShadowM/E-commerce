@@ -4,6 +4,7 @@ require("dotenv").config({ path: "config.env" });
 const express = require("express");
 const cors = require("cors");
 const compression = require("compression");
+const hpp = require("hpp");
 
 const dbConnection = require("./config/database");
 const globalError = require("./middlewares/errorMiddleware");
@@ -46,6 +47,25 @@ if (process.env.NODE_ENV === "development") {
 
 // !Rate limiting middleware
 mountRateLimiters(app);
+
+// !Middleware to prevent http param pollution (hpp), it will take the last parameter if it is an array
+// todo: apply for any possible parameter and make a config file for it
+app.use(
+  hpp({
+    whitelist: [
+      "price",
+      "ratingsAverage",
+      "ratingsQuantity",
+      "quantity",
+      "sold",
+      "category",
+      "brand",
+      "colors",
+      "createdAt",
+      "updatedAt",
+    ],
+  })
+);
 
 // !Mount routes
 mountRoutes(app);
