@@ -33,7 +33,7 @@ app.post(
   webhookCheckout
 );
 
-app.use(express.json());
+app.use(express.json({ limit: "100kb" })); // todo: review all your data models and set the limit accordingly, also set limits for number of images and calculate the size of the images
 app.use(express.static(path.join(__dirname, "uploads")));
 
 if (process.env.NODE_ENV === "development") {
