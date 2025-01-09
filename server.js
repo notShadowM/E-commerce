@@ -5,10 +5,12 @@ const express = require("express");
 const cors = require("cors");
 const compression = require("compression");
 const hpp = require("hpp");
+const mongoSanitize = require("express-mongo-sanitize");
 
 const dbConnection = require("./config/database");
 const globalError = require("./middlewares/errorMiddleware");
 const mountRateLimiters = require("./middlewares/rateLimitMiddleware");
+const sanitizeMiddleware = require("./middlewares/sanitizeMiddleware");
 const ApiError = require("./utils/apiError");
 // Routes
 const mountRoutes = require("./routes");
@@ -44,6 +46,12 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
   console.log(`mode: ${process.env.NODE_ENV}`);
 }
+
+// !Data sanitization against NoSQL query injection
+app.use(mongoSanitize()); // todo: is it needed? since we have a validation layer added to all routes.
+
+// !Data sanitization against XSS
+app.use(sanitizeMiddleware); // todo: search for better practices to prevent xss attacks
 
 // !Rate limiting middleware
 mountRateLimiters(app);
