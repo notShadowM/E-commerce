@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
     slug: {
       type: String,
       lowercase: true,
+      select: false, // todo: what is the purpose of this field?
     },
     email: {
       type: String,
@@ -30,6 +31,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please enter your password"],
       minlength: [6, "Password must be at least 6 characters"],
+      select: false,
     },
     passwordChangedAt: Date,
     // todo: these 3 fields are for password reset, move them when working on redis, also search what is the best pracice is 3 fields required?
@@ -47,22 +49,28 @@ const userSchema = new mongoose.Schema(
     },
     // !child referencing (one to many)
     // note: it is used when the children are expected to be not much
-    wishlist: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: "Product",
-      },
-    ],
+    wishlist: {
+      type: [
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: "Product",
+        },
+      ],
+      select: false,
+    },
     // todo: should we put one of the fields uniqe "like the alias most probably" to make sure there won't be 2 address with the same data? and surely we will add validation afterwards :)
-    addresses: [
-      {
-        alias: String,
-        details: String,
-        phone: String,
-        city: String,
-        postalCode: String,
-      },
-    ],
+    addresses: {
+      type: [
+        {
+          alias: String,
+          details: String,
+          phone: String,
+          city: String,
+          postalCode: String,
+        },
+      ],
+      select: false,
+    },
   },
   { timestamps: true }
 );
@@ -86,6 +94,21 @@ userSchema.post("init", setImageURL);
 
 // !for create process
 userSchema.post("save", setImageURL);
+
+userSchema.methods.toJSON = function () {
+  const user = this.toObject();
+  delete user.password;
+  delete user.passwordChangedAt;
+  delete user.passwordResetCode;
+  delete user.passwordResetExpires;
+  delete user.passwordResetVerified;
+  delete user.slug;
+  delete user.active;
+  delete user.createdAt;
+  delete user.updatedAt;
+
+  return user;
+};
 
 const User = mongoose.model("User", userSchema);
 
