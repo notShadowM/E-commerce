@@ -4,9 +4,13 @@ require("dotenv").config({ path: "config.env" });
 const express = require("express");
 const cors = require("cors");
 const compression = require("compression");
+const hpp = require("hpp");
+const mongoSanitize = require("express-mongo-sanitize");
 
 const dbConnection = require("./config/database");
 const globalError = require("./middlewares/errorMiddleware");
+const mountRateLimiters = require("./middlewares/rateLimitMiddleware");
+const sanitizeMiddleware = require("./middlewares/sanitizeMiddleware");
 const ApiError = require("./utils/apiError");
 // Routes
 const mountRoutes = require("./routes");
@@ -33,7 +37,7 @@ app.post(
   webhookCheckout
 );
 
-app.use(express.json());
+app.use(express.json({ limit: "100kb" })); // todo: review all your data models and set the limit accordingly, also set limits for number of images and calculate the size of the images
 app.use(express.static(path.join(__dirname, "uploads")));
 
 if (process.env.NODE_ENV === "development") {
@@ -42,6 +46,34 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
   console.log(`mode: ${process.env.NODE_ENV}`);
 }
+
+// !Data sanitization against NoSQL query injection
+app.use(mongoSanitize()); // todo: is it needed? since we have a validation layer added to all routes.
+
+// !Data sanitization against XSS
+app.use(sanitizeMiddleware); // todo: search for better practices to prevent xss attacks
+
+// !Rate limiting middleware
+mountRateLimiters(app);
+
+// !Middleware to prevent http param pollution (hpp), it will take the last parameter if it is an array
+// todo: apply for any possible parameter and make a config file for it
+app.use(
+  hpp({
+    whitelist: [
+      "price",
+      "ratingsAverage",
+      "ratingsQuantity",
+      "quantity",
+      "sold",
+      "category",
+      "brand",
+      "colors",
+      "createdAt",
+      "updatedAt",
+    ],
+  })
+);
 
 // !Mount routes
 mountRoutes(app);

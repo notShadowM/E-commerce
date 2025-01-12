@@ -26,7 +26,11 @@ exports.signup = asyncHandler(async (req, res, next) => {
   res.status(201).json({
     token,
     data: {
-      user,
+      email: user.email,
+      name: user.name,
+      _id: user._id,
+      role: user.role,
+      wishlist: user.wishlist,
     },
   });
 });
@@ -38,7 +42,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
   // Check if user exists && password is correct
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email }).select("name email password role");
 
   if (!user || !(await bycrpt.compare(password, user.password))) {
     return next(new ApiError("Invalid credentials", 401));
@@ -49,7 +53,10 @@ exports.login = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     token,
     data: {
-      user,
+      email: user.email,
+      name: user.name,
+      _id: user._id,
+      role: user.role,
     },
   });
 });
@@ -74,7 +81,17 @@ exports.protect = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    const user = await User.findById(decoded.userId);
+    let select = "";
+    if (req.method === "GET" && req.baseUrl.split("/")[3]) {
+      select = "+addresses";
+    } else if (
+      req.method === "GET" &&
+      req.baseUrl.split("/")[3] === "wishlist"
+    ) {
+      select = "+wishlist";
+    }
+
+    const user = await User.findById(decoded.userId).select(select);
 
     if (!user) {
       // todo: status code 404 or 401?
@@ -131,7 +148,9 @@ exports.allowTo =
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     email: req.body.email,
-  });
+  }).select(
+    "name email passwordResetCode passwordResetExpires passwordResetVerified"
+  );
 
   // todo: what if the user is not found? should we send a message to the user that the email is not found? or should we just send a message that the email has been sent to the user email but in reality, we didn't send anything?
   // ! i checked linkedin with a fake big email and it said that the email has been sent to the email, but in reality, it didn't send anything imo
@@ -194,7 +213,7 @@ exports.verifyResetCode = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     passwordResetCode: hashedResetCode,
     passwordResetExpires: { $gt: Date.now() },
-  });
+  }).select("passwordResetVerified");
 
   if (!user) {
     return next(new ApiError("Invalid or expired code", 400));
@@ -214,7 +233,9 @@ exports.verifyResetCode = asyncHandler(async (req, res, next) => {
 // @route POST /api/v1/auth/resetpassword
 // @access Public
 exports.resetPassword = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email }).select(
+    "password passwordResetVerified passwordResetCode passwordResetExpires"
+  );
   if (!user) {
     return next(new ApiError("No user found with this email", 404));
   }

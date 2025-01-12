@@ -13,6 +13,7 @@ const brandSchema = new mongoose.Schema(
     slug: {
       type: String,
       lowercase: true,
+      select: false,
     },
     image: String,
   },
